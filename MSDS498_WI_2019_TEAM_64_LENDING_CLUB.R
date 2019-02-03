@@ -1,18 +1,92 @@
 # Julio Testing Git on RStudio
+# options(scipen = 999)
 
-getwd()
-setwd("C:/Users/nishidh/Documents/Personal/MSPA/MSDS 498 Capstone")
-data=read.csv("loan.csv")
+# getwd()
+# setwd("C:/Users/nishidh/Documents/Personal/MSPA/MSDS 498 Capstone")
+# Manually Set Workng Directory
 
+# Read Data
+data = read.csv("loan.csv")
+
+# Show First Records
+head(data)
+
+# Summary of data
 summary(data)
 
+#EDA of Dataset
+install.packages("DataExplorer")
+library(DataExplorer)
+introduce(data)
+
+plot_intro(data)
 
 # Missing Data
 pMiss <- function(x){sum(is.na(x))/length(x)*100}
 sort(format(apply(data,2,pMiss),scientific=F),decreasing=T)
 
-## library(mice)
-## md.pattern(data)
+# Graph Missing Values
+plot_missing(data)
+
+# Not Used?
+# install.packages("mice")
+# library(mice)
+# md.pattern(data)
+
+# Distributions of Loan Amounts
+par(mfrow = c(2,3))
+# Histograms
+# Loan Amnt
+hist(data$loan_amnt,
+          type = "percent",
+          main = "Loan Applied for by the Borrower",
+          xlab = "Amount",
+          col = "#113C5E",
+          breaks = 10)
+
+# Funded Amnt
+hist(data$funded_amnt,
+     type = "percent",
+     main = "Amount Commited to Loan",
+     xlab = "Amount",
+     col = "#113C5E",
+     breaks = 10)
+
+# Funded Amnt Inv
+hist(data$funded_amnt_inv,
+     type = "percent",
+     main = "Amount Commited by Investors",
+     xlab = "Amount",
+     col = "#113C5E",
+     breaks = 10)
+
+# QQ- Plots
+# Loan Amnt
+qqnorm(data$loan_amnt, 
+       col = "#81CCE3",
+       main = "Loan Applied for by the Borrower")
+qqline(data$loan_amnt, 
+       col = "#EA4225", 
+       lty = 2,
+       lwd = 2)
+
+# Funded Amnt
+qqnorm(data$funded_amnt, 
+       col = "#81CCE3",
+       main = "Amount Commited to Loan")
+qqline(data$funded_amnt, 
+       col = "#EA4225", 
+       lty = 2,
+       lwd = 2)
+
+# Funded Amnt Inv
+qqnorm(data$funded_amnt_inv, 
+       col = "#81CCE3",
+       main = "Amount Commited by Investors")
+qqline(data$funded_amnt_inv, 
+       col = "#EA4225", 
+       lty = 2,
+       lwd = 2)
 
 # dti_joint and annual_inc_joint have over 99.9% missing data. This is due to the small representation of joint loan applications.
 summary(data$application_type) #Only 511 of all 887379 are joint application (99.94241% is single application)
