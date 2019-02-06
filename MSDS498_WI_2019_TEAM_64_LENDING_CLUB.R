@@ -88,6 +88,8 @@ qqline(data$funded_amnt_inv,
        lty = 2,
        lwd = 2)
 
+par(mfrow = c(1,1))
+
 # dti_joint and annual_inc_joint have over 99.9% missing data. This is due to the small representation of joint loan applications.
 summary(data$application_type) #Only 511 of all 887379 are joint application (99.94241% is single application)
 1-(511/(886868+511))
@@ -212,6 +214,36 @@ data$loan_status2 = as.factor(ifelse(data$loan_status=='Charged Off','Default',
 # Those may have higher chance of getting defaulted than those are in "current" status. However, they may still be "Fully Paid".
 
 summary(data$loan_status2) # 630440 (Current), 47228 (Default), 209711 (Fully Paid)
+
+# Bar Plots of Loan Status and Loan Status2
+install.packages("ggplot2")
+library(ggplot2)
+
+plot1 <- ggplot(data, aes(x = loan_status, fill = loan_status)) +
+                geom_bar() +
+                theme_bw() +
+                theme(legend.position = "none") + 
+                theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+                ylab("Total Count") +
+                ggtitle("Distribution by Loan Status") + 
+                theme(plot.title = element_text(hjust = 0.5)) + 
+                theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+                theme(axis.title.x=element_blank())
+
+plot2 <- ggplot(data, aes(x = loan_status2, fill = loan_status2)) +
+                geom_bar() +
+                theme_bw() +
+                theme(legend.position = "none") + 
+                theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+                ylab("Total Count") +
+                ggtitle("Distribution by Loan Status2") + 
+                theme(plot.title = element_text(hjust = 0.5)) + 
+                theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+                theme(axis.title.x=element_blank())
+
+require(gridExtra)
+grid.arrange(plot1, plot2, nrow = 1)
+
 
 ######################
 # Predictor Variable #
