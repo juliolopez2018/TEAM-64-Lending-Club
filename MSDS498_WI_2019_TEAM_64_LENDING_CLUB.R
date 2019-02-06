@@ -278,10 +278,21 @@ boxplot(data$funded_amnt~data$loan_status2)
 
 data$loan_approved_perc= data[which(data$funded_amnt!=0),]$funded_amnt/data[which(data$loan_amnt!=0),]$loan_amnt
 (1-0.9976988)*100
+length(data[which(data$loan_approved_perc==1.00),]$loan_approved_perc) #885317 (99.76763% of loans are approved at 100% or more of the original loan request amount)
 length(data[which(data$loan_approved_perc>=0.99),]$loan_approved_perc) #885337 (99.76988% of loans are approved at 99% or more of the original loan request amount)
 length(data[which(data$loan_approved_perc<0.99),]$loan_approved_perc) # only 2042 cases were approved less than 99% of the original requested amount.
-length(data[which(data$loan_approved_perc<0.90),]$loan_approved_perc) # 1930 cases were approved less than 99% of the original requested amount.
-hist(data[which(data$loan_approved_perc<0.99),]$loan_approved_perc,breaks=100, xlab = '% of the Original Requested Loan Amount', main='Distributions of loans that were approved \n less than 99% of the original requested amount \n (The whole population here represents 0.23% of the total) ')
+length(data[which(data$loan_approved_perc<0.90),]$loan_approved_perc) # 1930 cases were approved less than 90% of the original requested amount.
+length(data[which(data$loan_approved_perc<1.00),]$loan_approved_perc) # 1930 cases were approved less than 90% of the original requested amount.
+
+hist(data[which(data$loan_approved_perc<1.00),]$loan_approved_perc,
+     breaks=20, 
+     type = "percent",
+     col = "#113C5E",
+     xlab = '% of the Original Requested Loan Amount', 
+     main='Distributions of Loans Approved < 100%
+           (The whole population here represents 0.23% of the total)',
+     ylim = c(0,800),
+     xlim = c(0,1))
 
 summary(data$term) # 36M = 621125 (~70%), 60M = 266254 (~30%)
 
