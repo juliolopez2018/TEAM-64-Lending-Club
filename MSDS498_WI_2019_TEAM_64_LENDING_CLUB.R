@@ -12,6 +12,7 @@ data = read.csv("loan.csv")
 head(data)
 
 # Summary of data
+str(data)
 summary(data)
 
 #EDA of Dataset
@@ -26,7 +27,9 @@ pMiss <- function(x){sum(is.na(x))/length(x)*100}
 sort(format(apply(data,2,pMiss),scientific=F),decreasing=T)
 
 # Graph Missing Values
-plot_missing(data)
+# plot_missing(data) # All Variables
+plot_missing(data[colnames(data)[apply (data, 2, anyNA)]]) # Only variables with missing values
+summary(data$annual_inc)
 
 # Not Used?
 # install.packages("mice")
